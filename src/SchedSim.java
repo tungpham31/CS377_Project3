@@ -40,7 +40,7 @@ class SchedSim {
 	private List<Process> processTable;
 	
 	//Devices;
-	public Devices CPU, IO;
+	public Device CPU, IO;
 
 	public void main(String[] args) {
 		// parse arguments
