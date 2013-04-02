@@ -7,42 +7,42 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-class SchedSim {
-	private String fileName; // file name of input file
-	private int maxProcesses; // cap on total processes for simulation
-	private int maxCPUBursts; // cap on total CPU bursts per process
-	private double currentTime = 0; // current time in simulation, starting at
+public class SchedSim {
+	private static String fileName; // file name of input file
+	private static int maxProcesses; // cap on total processes for simulation
+	private static int maxCPUBursts; // cap on total CPU bursts per process
+	private static double currentTime = 0; // current time in simulation, starting at
 	// zero
-	public double nextProcessTime;
-	public int numberOfCPUBursts;
-	public double[] sizeOfCPUBursts;
-	public double[] sizeOfIOBursts;
+	public static double nextProcessTime;
+	public static int numberOfCPUBursts;
+	public static double[] sizeOfCPUBursts;
+	public static double[] sizeOfIOBursts;
 
 	private enum Algorithm { // algorithm to use for entire run of simulation
 		FCFS, SJF, SRTF;
 	}
 
-	private Algorithm algorithm;
+	private static Algorithm algorithm;
 
 	// a heap containing all the events waiting
-	private Queue<Event> eventHeap;
+	private static Queue<Event> eventHeap;
 
 	// a priority queue for processes which are ready to run
-	private Queue<Process> readyQueue;
+	private static Queue<Process> readyQueue;
 
 	// a first in first out queue to handle IO events
-	private Queue<Process> ioQueue;
+	private static Queue<Process> ioQueue;
 
 	// input stream to read bytes from input file
-	private FileInputStream inputStream;
+	private static FileInputStream inputStream;
 
 	// process table
-	private List<Process> processTable;
+	private static List<Process> processTable;
 	
 	//Devices;
-	public Device CPU, IO;
+	public static Device CPU, IO;
 
-	public void main(String[] args) {
+	public static void main(String[] args) {
 		// parse arguments
 		parseArguments(args);
 
@@ -145,7 +145,7 @@ class SchedSim {
 	/*
 	 * parse the arguments given from main
 	 */
-	private void parseArguments(String[] args) {
+	private static void parseArguments(String[] args) {
 		fileName = args[0]; // get fileName
 		maxProcesses = Integer.parseInt(args[1]); // get maxProcesses
 		maxCPUBursts = Integer.parseInt(args[2]); // get maxCPUBursts
@@ -162,7 +162,7 @@ class SchedSim {
 	/*
 	 * initialize global data structures
 	 */
-	private void initializeDataStructures() {
+	private static void initializeDataStructures() {
 		currentTime = 0;
 		eventHeap = new PriorityQueue<Event>();
 		// add an inital event for event heap which will arrive at time = value
@@ -176,17 +176,19 @@ class SchedSim {
 		IO = new Device();
 	}
 
-	private void readDataFromInput() {
+	private static void readDataFromInput() {
 		nextProcessTime = readAByteFromInput() / 10.0;
 		numberOfCPUBursts = readAByteFromInput() % maxCPUBursts + 1;
 		int n = numberOfCPUBursts;
+		sizeOfCPUBursts = new double[n];
+		sizeOfIOBursts = new double[n];
 		for (int i = 0; i <= n - 1; i++)
 			sizeOfCPUBursts[i] = readAByteFromInput() / 25.6;
 		for (int i = 0; i <= n - 2; i++)
 			sizeOfIOBursts[i] = readAByteFromInput() / 25.6;
 	}
 
-	private int readAByteFromInput() {
+	private static int readAByteFromInput() {
 		int val = -1;
 		try {
 			val = (int) inputStream.read() & 0xff;
