@@ -130,6 +130,8 @@ public class SchedSim {
 					}
 				}
 				
+				CPU.currentProcess = null;
+				
 				if (!readyQueue.isEmpty()){
 					process = readyQueue.poll();
 					CPU.currentProcess = process;
