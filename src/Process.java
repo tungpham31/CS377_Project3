@@ -22,9 +22,6 @@ class Process {
 	public double remainingTime = 0; // used to calculate remaining time till
 								// completion if burst is descheduled
 
-	public Process(){
-	}
-	
 	public Process(State state, int numberOfCPUBursts, double[] sizeOfCPUBursts, double[] sizeOfIOBursts, int currentBurst, double remainingTime){
 		this.state = state;
 		this.numberOfCPUBursts = numberOfCPUBursts;
